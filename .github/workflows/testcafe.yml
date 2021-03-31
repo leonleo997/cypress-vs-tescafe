@@ -1,0 +1,27 @@
+name: TestCafe Continuous Integration
+
+on:
+  push:
+    branches:
+    - '**'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  testcafe_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - name: delete cache
+      run: npm cache clean --force
+    - name: Install testcafe
+      run: npm i -g testcafe
+    - name: Run testcafe tests
+      uses: DevExpress/testcafe-action@latest
+      with:
+        args: "chrome testcafe/*.spec.js"
